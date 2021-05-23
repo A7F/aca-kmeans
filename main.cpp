@@ -7,6 +7,7 @@ using namespace std;
 // define how many clusters of points we want and the total number of points
 const int clusters = 3;
 const int num_points = 50;
+// specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 
 class Point{
@@ -16,8 +17,9 @@ public:
 };
 
 Point points[num_points];
+Point
 
-int main(){
+void load_dataset(){
     std::stringstream ss;
     ss << base_dir << "input\\" << num_points << "points-1.txt";
     string filepath = ss.str();
@@ -33,5 +35,9 @@ int main(){
         points[i] = point;
         i++;
     }
+}
+
+int main(){
+    load_dataset();
     return 0;
 }
