@@ -17,7 +17,6 @@ public:
 };
 
 Point points[num_points];
-Point
 
 void load_dataset(){
     std::stringstream ss;
