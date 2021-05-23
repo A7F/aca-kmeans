@@ -13,3 +13,7 @@
 [k-means with CUDA](https://github.com/serban/kmeans)
 
 [parallelization of K-means serial using CUDA](https://arxiv.org/pdf/1908.02136.pdf)
+
+[super awesome explanation of kmeans clustering (yes I know it's in italian...)](https://www.lorenzogovoni.com/algoritmo-k-means-cose-e-come-funziona/)
+
+[another super useful explanation of the algorithm, but this time is in english](https://www.analyticsvidhya.com/blog/2019/08/comprehensive-guide-k-means-clustering/)
