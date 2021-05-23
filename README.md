@@ -11,3 +11,5 @@
 [another implementation in C++ and OpenMP](https://github.com/SestoAle/Parallel-K-Means)
 
 [k-means with CUDA](https://github.com/serban/kmeans)
+
+[parallelization of K-means serial using CUDA](https://arxiv.org/pdf/1908.02136.pdf)
