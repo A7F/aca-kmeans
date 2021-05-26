@@ -17,3 +17,5 @@
 [super awesome explanation of kmeans clustering (yes I know it's in italian...)](https://www.lorenzogovoni.com/algoritmo-k-means-cose-e-come-funziona/)
 
 [another super useful explanation of the algorithm, but this time is in english](https://www.analyticsvidhya.com/blog/2019/08/comprehensive-guide-k-means-clustering/)
+
+[k-means implementation + report with openmp and c++](https://github.com/SestoAle/Parallel-K-Means)
