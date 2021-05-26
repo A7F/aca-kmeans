@@ -21,7 +21,7 @@ const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 int load_dataset();
 int init_clusters();
 double distance(Point point, Cluster cluster);
-void compute_distance();
+bool naive_kmeans();
 Point points[num_points];
 Cluster clusters[num_clusters];
 
@@ -37,7 +37,15 @@ int main(){
     bool converged = false;
 
     // algorithm start. Compute distances between each point and centroids
-    compute_distance();
+    while(!converged){
+        converged = naive_kmeans();
+    }
+
+    // print the clusters once the algorithm has converged
+    for(int i=0; i<num_clusters; i++){
+        clusters[i].print();
+    }
+
     return 0;
 }
 
@@ -72,7 +80,8 @@ int init_clusters(){
 }
 
 //compute the distance between all the points and centroids
-void compute_distance(){
+bool naive_kmeans(){
+    bool has_converged = false;
     for(int i=0; i<num_points; i++){
         double min_distance;
         int min_cluster_index;
@@ -83,9 +92,15 @@ void compute_distance(){
                 min_cluster_index = j;
             }
         }
-        points[i].set_cluster(min_cluster_index);
+        int old_cluster = points[i].get_cluster();
+        if (old_cluster == min_cluster_index){
+            has_converged = true;
+        } else {
+            points[i].set_cluster(min_cluster_index);
+        }
         clusters[min_cluster_index].update_centroid(points[i]);
     }
+    return has_converged;
 }
 
 // compute the distance between two 2D points (pythagorean theorem)
