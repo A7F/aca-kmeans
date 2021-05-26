@@ -27,6 +27,11 @@ public:
         return this->dimension;
     }
 
+    // set total number of points belonging to the cluster. This method should reset the variable at each iteration
+    void set_dimension(int dimension){
+        this->dimension=dimension;
+    }
+
     /**
     TODO:
     check if new coordinates are different than the current ones, if yes update centroid, otherwise centroid

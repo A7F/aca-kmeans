@@ -44,6 +44,10 @@ public:
         return this->cluster;
     }
 
+    void print(){
+        std::cout << "point at cluster " << this->cluster << ": (" << this->x << ", " << this->y << ")" << std::endl;
+    }
+
 private:
     double x;
     double y;

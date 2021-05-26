@@ -10,8 +10,8 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 3;
-const int num_points = 50;
+const int num_clusters = 2;
+const int num_points = 100;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -37,10 +37,18 @@ int main(){
     bool converged = false;
 
     // algorithm start. Compute distances between each point and centroids
+    int iteration = 0;
     while(!converged){
+        iteration++;
+        // reset dimension for all the clusters before starting a new iteration
+        for(int i=0; i<num_clusters; i++){
+            clusters[i].set_dimension(0);
+        }
         converged = naive_kmeans();
     }
-    cout << endl << "======= results after convergence =======" << endl;
+
+    cout << endl << "======= results after convergence (" << iteration << " iters) =======" << endl;
+
     // print the clusters once the algorithm has converged
     for(int i=0; i<num_clusters; i++){
         clusters[i].print();
@@ -51,8 +59,9 @@ int main(){
 
 // load dataset from file and store each point inside the array declared in the beginning
 int load_dataset(){
-    std::stringstream ss;
+    stringstream ss;
     ss << base_dir << "input\\" << num_points << "points-1.txt";
+    // ss << base_dir << "input\\iris.txt";
     string filepath = ss.str();
     ifstream infile(filepath);
     if(!infile){
@@ -60,7 +69,7 @@ int load_dataset(){
     }
     int x, y, i=0;
     while(infile >> x >> y){
-        Point point((int) x, (int) y);
+        Point point((float) x, (float) y);
         points[i] = point;
         i++;
     }
@@ -82,6 +91,7 @@ int init_clusters(){
 //compute the distance between all the points and centroids
 bool naive_kmeans(){
     bool has_converged = false;
+    int updates = 0;
     for(int i=0; i<num_points; i++){
         double min_distance = 9999999;
         int min_cluster_index = 42;
@@ -96,10 +106,12 @@ bool naive_kmeans(){
         if (old_cluster == min_cluster_index){
             has_converged = true;
         } else {
+            updates++;
             points[i].set_cluster(min_cluster_index);
         }
         clusters[min_cluster_index].update_centroid(points[i]);
     }
+    has_converged = (updates == 0);
     return has_converged;
 }
 
