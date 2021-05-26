@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 tot_points = 300
 min_val = -100
 max_val = 100
-filepath = f"input/{tot_points}points-1.txt"
+filepath = f"../input/{tot_points}points-1.txt"
 
 points = []
 
