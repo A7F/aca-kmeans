@@ -40,7 +40,7 @@ int main(){
     while(!converged){
         converged = naive_kmeans();
     }
-
+    cout << endl << "======= results after convergence =======" << endl;
     // print the clusters once the algorithm has converged
     for(int i=0; i<num_clusters; i++){
         clusters[i].print();
