@@ -33,13 +33,13 @@ public:
     didn't move so this means that the algorithm converged for this specific cluster
     **/
     void update_centroid(Point point){
+        this->dimension++;
         double old_x = this->pivot.get_x();
-        double new_x = old_x + point.get_x();
+        double new_x = old_x + point.get_x() / this->dimension;
         this->pivot.set_x(new_x);
         double old_y = this->pivot.get_y();
-        double new_y = old_y + point.get_y();
+        double new_y = old_y + point.get_y() / this->dimension;
         this->pivot.set_y(new_y);
-        this->dimension++;
     }
 
     void print(){

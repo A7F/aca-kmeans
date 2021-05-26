@@ -83,8 +83,8 @@ int init_clusters(){
 bool naive_kmeans(){
     bool has_converged = false;
     for(int i=0; i<num_points; i++){
-        double min_distance;
-        int min_cluster_index;
+        double min_distance = 9999999;
+        int min_cluster_index = 42;
         for(int j=0; j<num_clusters; j++){
             double tmp_distance = distance(points[i], clusters[j]);
             if(tmp_distance<min_distance){
