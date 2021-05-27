@@ -10,15 +10,15 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 2;
-const int num_points = 50;
+const int num_clusters = 3;
+const int num_points = 150;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 
 
 // defining data and functions
-int load_dataset();
+int load_dataset(bool iris_dataset);
 int init_clusters();
 double distance(Point point, Cluster cluster);
 bool naive_kmeans();
@@ -26,9 +26,10 @@ void export_result();
 Point points[num_points];
 Cluster clusters[num_clusters];
 
+
 int main(){
     srand(time(NULL));
-    int tot_points = load_dataset();
+    int tot_points = load_dataset(false);
     cout << "total points loaded: " << tot_points << endl;
     int tot_clusters = init_clusters();
     cout << "total clusters instantiated: " << tot_clusters << endl;
@@ -41,11 +42,12 @@ int main(){
     int iteration = 0;
     while(!converged){
         iteration++;
+        converged = naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
         for(int i=0; i<num_clusters; i++){
-            clusters[i].set_dimension(0);
+            clusters[i].update_centroid();
+            clusters[i].empty_pivot();
         }
-        converged = naive_kmeans();
     }
 
     cout << endl << "======= results after convergence (" << iteration << " iters) =======" << endl;
@@ -60,17 +62,22 @@ int main(){
 }
 
 // load dataset from file and store each point inside the array declared in the beginning
-int load_dataset(){
+int load_dataset(bool iris_dataset){
     stringstream ss;
-    ss << base_dir << "input\\" << num_points << "points-1.txt";
+    if(iris_dataset){
+        ss << base_dir << "input\\iris.txt";
+    } else {
+        ss << base_dir << "input\\" << num_points << "points-1.txt";
+    }
     string filepath = ss.str();
     ifstream infile(filepath);
     if(!infile){
         cerr << "Could not open file. Maybe the number of points set is wrong?" << std::endl;
     }
-    int x, y, i=0;
+    double x, y;
+    int i=0;
     while(infile >> x >> y){
-        Point point((float) x, (float) y);
+        Point point((double) x, (double) y);
         points[i] = point;
         i++;
     }
@@ -81,9 +88,9 @@ int load_dataset(){
 int init_clusters(){
     int i=0;
     for(i; i<num_clusters; i++){
-        int x = rand() % 100 + 1;
-        int y = rand() % 100 + 1;
-        Cluster cluster = Cluster(Point((int) x, (int) y));
+        double x = rand() % 100 + 1;
+        double y = rand() % 100 + 1;
+        Cluster cluster = Cluster(Point((double) x, (double) y));
         clusters[i] = cluster;
     }
     return i;
@@ -110,8 +117,8 @@ bool naive_kmeans(){
             updates++;
             points[i].set_cluster(min_cluster_index);
         }
-        cout << "point set to cluster " << points[i].get_cluster() << endl;
-        clusters[min_cluster_index].update_centroid(points[i]);
+        // cout << "point set to cluster " << points[i].get_cluster() << endl;
+        clusters[min_cluster_index].add_point(points[i]);
     }
     has_converged = (updates == 0);
     return has_converged;
@@ -129,12 +136,12 @@ void export_result(){
     stringstream ss;
     ss << base_dir << "output\\" << "res.txt";
     string filepath = ss.str();
-    ofstream MyFile(filepath);
-    if(!MyFile){
+    ofstream outfile(filepath);
+    if(!outfile){
         cout << "file can't be opened" << endl;
     }
     for(int i=0; i<num_points; i++){
-        MyFile << points[i].get_x() << " " << points[i].get_y() << " " << points[i].get_cluster() << endl;
+        outfile << points[i].get_x() << " " << points[i].get_y() << " " << points[i].get_cluster() << endl;
     }
-    MyFile.close();
+    outfile.close();
 }

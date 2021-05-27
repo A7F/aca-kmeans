@@ -13,9 +13,9 @@ label = []
 
 for line in lines:
     data = line.split(" ")
-    x_coord.append(int(data[0]))
-    y_coord.append(int(data[1]))
-    label.append(int(data[2]))
+    x_coord.append(float(data[0]))
+    y_coord.append(float(data[1]))
+    label.append(float(data[2]))
 
 categories = np.array(label)
 

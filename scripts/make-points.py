@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 
 # parameters to consider when generating the file
-tot_points = 300
+tot_points = 150
 min_val = -100
 max_val = 100
 filepath = f"../input/{tot_points}points-1.txt"
