@@ -10,7 +10,7 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 3;
+const int num_clusters = 4;
 const int num_points = 150;
 
 // specify here your absolute path to project folder
@@ -21,6 +21,7 @@ const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 int load_dataset(bool iris_dataset);
 int init_clusters();
 double distance(Point point, Cluster cluster);
+int random(int min, int max);
 void naive_kmeans();
 void export_result();
 Point points[num_points];
@@ -29,6 +30,7 @@ Cluster clusters[num_clusters];
 
 int main(){
     srand(time(NULL));
+    // load the dataset. Use flag true if you want to test with iris dataset
     int tot_points = load_dataset(true);
     cout << "total points loaded: " << tot_points << endl;
     int tot_clusters = init_clusters();
@@ -40,7 +42,7 @@ int main(){
 
     // algorithm start. Compute distances between each point and centroids
     int iteration = 0;
-    while(!converged){
+    while(!converged && iteration<5){
         iteration++;
         naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
@@ -48,7 +50,7 @@ int main(){
             converged = clusters[i].update_centroid();
             clusters[i].empty_pivot();
         }
-        printf("Iteration %d done \n", iteration);
+        printf(">>> Iteration %d done <<<\n", iteration);
     }
 
     cout << endl << "======= results after convergence (" << iteration << " iters) =======" << endl;
@@ -89,8 +91,9 @@ int load_dataset(bool iris_dataset){
 int init_clusters(){
     int index=0;
     for(index; index<num_clusters; index++){
-        double x = rand() % 100 + 1;
-        double y = rand() % 100 + 1;
+        int random_point_index = random(0, num_points);
+        double x = points[random_point_index].get_x();
+        double y = points[random_point_index].get_y();
         Cluster cluster = Cluster(Point((double) x, (double) y, index));
         clusters[index] = cluster;
     }
@@ -102,8 +105,9 @@ void naive_kmeans(){
     for(int i=0; i<num_points; i++){
         double min_distance = distance(points[i], clusters[0]);
         int min_cluster_index = 0;
-        for(int j=1; j<num_clusters; j++){
+        for(int j=0; j<num_clusters; j++){
             double tmp_distance = distance(points[i], clusters[j]);
+            printf("distance with cluster %i pivot (%f, %f): %f\n", j, clusters[j].get_pivot().get_x(), clusters[j].get_pivot().get_y(), tmp_distance);
             if(tmp_distance<min_distance){
                 min_distance = tmp_distance;
                 min_cluster_index = j;
@@ -116,9 +120,12 @@ void naive_kmeans(){
 
 // compute the distance between two 2D points (pythagorean theorem)
 double distance(Point point, Cluster cluster){
-    double d = sqrt(pow(point.get_x() - cluster.get_pivot().get_x(), 2) +
-                    pow(point.get_y() - cluster.get_pivot().get_y(), 2));
+    double d = sqrt(pow(point.get_x() - cluster.get_pivot().get_x(), 2) + pow(point.get_y() - cluster.get_pivot().get_y(), 2));
     return d;
+}
+
+int random(int min, int max){
+    return min + rand() % (( max + 1 ) - min);
 }
 
 // export algorithm result to a file to process it using python (plotting, mostly)
