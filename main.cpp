@@ -11,7 +11,7 @@ using namespace std;
 
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 2;
-const int num_points = 100;
+const int num_points = 50;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -22,6 +22,7 @@ int load_dataset();
 int init_clusters();
 double distance(Point point, Cluster cluster);
 bool naive_kmeans();
+void export_result();
 Point points[num_points];
 Cluster clusters[num_clusters];
 
@@ -54,6 +55,7 @@ int main(){
         clusters[i].print();
     }
 
+    export_result();
     return 0;
 }
 
@@ -61,7 +63,6 @@ int main(){
 int load_dataset(){
     stringstream ss;
     ss << base_dir << "input\\" << num_points << "points-1.txt";
-    // ss << base_dir << "input\\iris.txt";
     string filepath = ss.str();
     ifstream infile(filepath);
     if(!infile){
@@ -102,13 +103,14 @@ bool naive_kmeans(){
                 min_cluster_index = j;
             }
         }
-        int old_cluster = points[i].get_cluster();
-        if (old_cluster == min_cluster_index){
+        int old_cluster_index = points[i].get_cluster();
+        if (old_cluster_index == min_cluster_index){
             has_converged = true;
         } else {
             updates++;
             points[i].set_cluster(min_cluster_index);
         }
+        cout << "point set to cluster " << points[i].get_cluster() << endl;
         clusters[min_cluster_index].update_centroid(points[i]);
     }
     has_converged = (updates == 0);
@@ -117,7 +119,22 @@ bool naive_kmeans(){
 
 // compute the distance between two 2D points (pythagorean theorem)
 double distance(Point point, Cluster cluster){
-    double d = sqrt(pow(point.get_x() - cluster.get_pivot().get_x(),2) +
+    double d = sqrt(pow(point.get_x() - cluster.get_pivot().get_x(), 2) +
                     pow(point.get_y() - cluster.get_pivot().get_y(), 2));
     return d;
+}
+
+// export algorithm result to a file to process it using python (plotting, mostly)
+void export_result(){
+    stringstream ss;
+    ss << base_dir << "output\\" << "res.txt";
+    string filepath = ss.str();
+    ofstream MyFile(filepath);
+    if(!MyFile){
+        cout << "file can't be opened" << endl;
+    }
+    for(int i=0; i<num_points; i++){
+        MyFile << points[i].get_x() << " " << points[i].get_y() << " " << points[i].get_cluster() << endl;
+    }
+    MyFile.close();
 }
