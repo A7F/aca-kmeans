@@ -21,7 +21,7 @@ const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 int load_dataset(bool iris_dataset);
 int init_clusters();
 double distance(Point point, Cluster cluster);
-bool naive_kmeans();
+void naive_kmeans();
 void export_result();
 Point points[num_points];
 Cluster clusters[num_clusters];
@@ -29,7 +29,7 @@ Cluster clusters[num_clusters];
 
 int main(){
     srand(time(NULL));
-    int tot_points = load_dataset(false);
+    int tot_points = load_dataset(true);
     cout << "total points loaded: " << tot_points << endl;
     int tot_clusters = init_clusters();
     cout << "total clusters instantiated: " << tot_clusters << endl;
@@ -42,12 +42,13 @@ int main(){
     int iteration = 0;
     while(!converged){
         iteration++;
-        converged = naive_kmeans();
+        naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
         for(int i=0; i<num_clusters; i++){
-            clusters[i].update_centroid();
+            converged = clusters[i].update_centroid();
             clusters[i].empty_pivot();
         }
+        printf("Iteration %d done \n", iteration);
     }
 
     cout << endl << "======= results after convergence (" << iteration << " iters) =======" << endl;
@@ -86,42 +87,31 @@ int load_dataset(bool iris_dataset){
 
 // initialize random pivoting elements as many as the number of clusters
 int init_clusters(){
-    int i=0;
-    for(i; i<num_clusters; i++){
+    int index=0;
+    for(index; index<num_clusters; index++){
         double x = rand() % 100 + 1;
         double y = rand() % 100 + 1;
-        Cluster cluster = Cluster(Point((double) x, (double) y));
-        clusters[i] = cluster;
+        Cluster cluster = Cluster(Point((double) x, (double) y, index));
+        clusters[index] = cluster;
     }
-    return i;
+    return index;
 }
 
 //compute the distance between all the points and centroids
-bool naive_kmeans(){
-    bool has_converged = false;
-    int updates = 0;
+void naive_kmeans(){
     for(int i=0; i<num_points; i++){
-        double min_distance = 9999999;
-        int min_cluster_index = 42;
-        for(int j=0; j<num_clusters; j++){
+        double min_distance = distance(points[i], clusters[0]);
+        int min_cluster_index = 0;
+        for(int j=1; j<num_clusters; j++){
             double tmp_distance = distance(points[i], clusters[j]);
             if(tmp_distance<min_distance){
                 min_distance = tmp_distance;
                 min_cluster_index = j;
             }
         }
-        int old_cluster_index = points[i].get_cluster();
-        if (old_cluster_index == min_cluster_index){
-            has_converged = true;
-        } else {
-            updates++;
-            points[i].set_cluster(min_cluster_index);
-        }
-        // cout << "point set to cluster " << points[i].get_cluster() << endl;
+        points[i].set_cluster(min_cluster_index);
         clusters[min_cluster_index].add_point(points[i]);
     }
-    has_converged = (updates == 0);
-    return has_converged;
 }
 
 // compute the distance between two 2D points (pythagorean theorem)
@@ -139,6 +129,10 @@ void export_result(){
     ofstream outfile(filepath);
     if(!outfile){
         cout << "file can't be opened" << endl;
+    }
+    outfile << num_clusters << endl;
+    for(int i=0; i<num_clusters; i++){
+        outfile << clusters[i].get_pivot().get_x() << " " << clusters[i].get_pivot().get_y() << " " << clusters[i].get_pivot().get_cluster() << endl;
     }
     for(int i=0; i<num_points; i++){
         outfile << points[i].get_x() << " " << points[i].get_y() << " " << points[i].get_cluster() << endl;

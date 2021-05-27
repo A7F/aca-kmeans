@@ -59,13 +59,29 @@ public:
     }
 
     // update centroid by setting the new coordinates as current
-    void update_centroid(){
-        this->pivot.set_x(this->new_pivot.get_x() / this->dimension);
-        this->pivot.set_y(this->new_pivot.get_y() / this->dimension);
+    bool update_centroid(){
+        double new_x = 0, new_y = 0;
+        new_pivot.print();
+        pivot.print();
+        if(dimension == 0){
+            new_x = this->new_pivot.get_x()/1;
+            new_y = this->new_pivot.get_y()/1;
+        } else {
+            new_x = this->new_pivot.get_x()/this->dimension;
+            new_y = this->new_pivot.get_y()/this->dimension;
+        }
+
+        if(this->pivot.get_x() == new_x && this->pivot.get_y() == new_y){
+            return true;
+        }
+
+        this->pivot.set_x(new_x);
+        this->pivot.set_y(new_y);
+        return false;
     }
 
     void print(){
-        std::cout << "cluster has dimension " << dimension << " and pivot (" << this->pivot.get_x() << ", " << this->pivot.get_y() << ")" << std::endl;
+        std::cout << "cluster " << pivot.get_cluster() << " has pivot (" << this->pivot.get_x() << ", " << this->pivot.get_y() << ")" << std::endl;
     }
 
 private:
