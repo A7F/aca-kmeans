@@ -10,15 +10,22 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 4;
-const int num_points = 150;
+const int num_clusters = 3;
+const int num_points = 500;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
+/**
+* specify here which dataset you want to use. Datasets available:
+* "points" = random points
+* "iris" = iris dataset, 3 clusters known, 150 points
+* "blobs" = synthetic clusters generated from sk-learn with function make_blobs. Set cluster and points accordingly
+**/
+const string dataset = "blobs";
 
 
 // defining data and functions
-int load_dataset(bool iris_dataset);
+int load_dataset(string dataset);
 int init_clusters();
 double distance(Point point, Cluster cluster);
 int random(int min, int max);
@@ -31,7 +38,7 @@ Cluster clusters[num_clusters];
 int main(){
     srand(time(NULL));
     // load the dataset. Use flag true if you want to test with iris dataset
-    int tot_points = load_dataset(true);
+    int tot_points = load_dataset(dataset);
     cout << "total points loaded: " << tot_points << endl;
     int tot_clusters = init_clusters();
     cout << "total clusters instantiated: " << tot_clusters << endl;
@@ -42,7 +49,7 @@ int main(){
 
     // algorithm start. Compute distances between each point and centroids
     int iteration = 0;
-    while(!converged && iteration<5){
+    while(!converged){
         iteration++;
         naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
@@ -64,13 +71,18 @@ int main(){
     return 0;
 }
 
-// load dataset from file and store each point inside the array declared in the beginning
-int load_dataset(bool iris_dataset){
+// load dataset from file and store each point inside the array declared in the beginning.
+// datasets available are "iris", "points" or "blobs".
+int load_dataset(string dataset){
     stringstream ss;
-    if(iris_dataset){
+    if(dataset=="iris"){
         ss << base_dir << "input\\iris.txt";
-    } else {
-        ss << base_dir << "input\\" << num_points << "points-1.txt";
+    }
+    if(dataset=="points"){
+        ss << base_dir << "input\\" << num_points << "points.txt";
+    }
+    if(dataset=="blobs"){
+        ss << base_dir << "input\\" << num_points << "-" << num_clusters << "-blob.txt";
     }
     string filepath = ss.str();
     ifstream infile(filepath);
