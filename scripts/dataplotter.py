@@ -26,7 +26,7 @@ for line in lines[1:]:
 
 categories = np.array(label)
 
-plt.title(f"K-means output result for {len(label)-num_clusters} points")
+plt.title(f"K-means output result for {len(label)-num_clusters} points, {num_clusters} clusters")
 plt.xlabel("x coordinate")
 plt.ylabel("y coordinate")
 plt.scatter(x_coord, y_coord, c=label)

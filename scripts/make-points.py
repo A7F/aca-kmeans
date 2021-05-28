@@ -3,10 +3,10 @@ import random
 import matplotlib.pyplot as plt
 
 # parameters to consider when generating the file
-tot_points = 150
+tot_points = 500
 min_val = -100
 max_val = 100
-filepath = f"../input/{tot_points}points-1.txt"
+filepath = f"../input/{tot_points}points.txt"
 
 points = []
 
@@ -25,11 +25,13 @@ if os.path.isfile(filepath):
 else:
     with open(filepath, "w") as fin:
         for i in range(tot_points):
-            x = random.randint(min_val, max_val)
-            y = random.randint(min_val, max_val)
-            if (x, y) not in points:
-                points.append((x, y))
-                fin.write(f"{x} {y}\n")
+            while True:
+                x = random.randint(min_val, max_val)
+                y = random.randint(min_val, max_val)
+                if (x, y) not in points:
+                    points.append((x, y))
+                    fin.write(f"{x} {y}\n")
+                    break
 
 plt.scatter(*zip(*points))
 plt.show()
