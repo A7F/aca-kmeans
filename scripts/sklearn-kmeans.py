@@ -4,8 +4,10 @@ import numpy as np
 import time
 
 
-num_points = 150
-num_clusters = 5
+num_points = 50000
+num_clusters = 2
+
+start = time.time()
 
 
 class Datasets:
@@ -27,9 +29,8 @@ class Datasets:
         return np.array(data)
 
 
-start = time.time()
 ds = Datasets(num_points, num_clusters)
-raw_dataset = ds.get_data(ds.IRIS)
+raw_dataset = ds.get_data(ds.BLOBS)
 
 fig, (ax1, ax2) = plt.subplots(1, 2)
 fig.suptitle("sk-learn K-Means Python clustering")
