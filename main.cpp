@@ -10,8 +10,8 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 3;
-const int num_points = 500;
+const int num_clusters = 2;
+const int num_points = 10000;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -120,7 +120,7 @@ void naive_kmeans(){
         int min_cluster_index = 0;
         for(int j=0; j<num_clusters; j++){
             double tmp_distance = distance(points[i], clusters[j]);
-            printf("distance with cluster %i pivot (%f, %f): %f\n", j, clusters[j].get_pivot().get_x(), clusters[j].get_pivot().get_y(), tmp_distance);
+            // printf("distance with cluster %i pivot (%f, %f): %f\n", j, clusters[j].get_pivot().get_x(), clusters[j].get_pivot().get_y(), tmp_distance);
             if(tmp_distance<min_distance){
                 min_distance = tmp_distance;
                 min_cluster_index = j;

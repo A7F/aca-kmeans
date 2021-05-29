@@ -12,7 +12,6 @@ public:
     }
     Cluster(Point pivot){
         this->pivot = pivot;
-        this->new_pivot = Point();
         this->new_pivot.set_cluster(pivot.get_cluster());
         this->dimension = 0;
     }
@@ -48,8 +47,6 @@ public:
     }
 
     void add_point(Point point){
-        std::cout << "adding point:" << std::endl;
-        point.print();
         this->new_pivot.set_x(new_pivot.get_x() + point.get_x());
         this->new_pivot.set_y(new_pivot.get_y() + point.get_y());
         // this->new_pivot.set_cluster(point.get_cluster());
@@ -65,7 +62,6 @@ public:
     // update centroid by setting the new coordinates as current
     bool update_centroid(){
         double new_x, new_y;
-        pivot.print();
         if(dimension == 0){
             new_x = this->new_pivot.get_x()/1;
             new_y = this->new_pivot.get_y()/1;
@@ -80,7 +76,6 @@ public:
 
         this->pivot.set_x(new_x);
         this->pivot.set_y(new_y);
-        pivot.print();
         return false;
     }
 
