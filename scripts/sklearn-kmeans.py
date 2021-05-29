@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 
-num_points = 50000
+num_points = 10000
 num_clusters = 2
 
 start = time.time()
@@ -14,9 +14,9 @@ class Datasets:
     def __init__(self, points, clusters):
         self._points = points
         self._clusters = clusters
-        self.POINTS = f"../input/{self._points}points.txt"
-        self.BLOBS = f"../input/{self._points}-{self._clusters}-blob.txt"
-        self.IRIS = f"../input/iris.txt"
+        self.POINTS = {"path": f"../input/{self._points}points.txt", "name": "points"}
+        self.BLOBS = {"path": f"../input/{self._points}-{self._clusters}-blob.txt", "name": "blobs"}
+        self.IRIS = {"path": "../input/iris.txt", "name": "iris"}
 
     def get_data(self, path):
         data = []
@@ -30,7 +30,8 @@ class Datasets:
 
 
 ds = Datasets(num_points, num_clusters)
-raw_dataset = ds.get_data(ds.BLOBS)
+sel = ds.BLOBS
+raw_dataset = ds.get_data(sel["path"])
 
 fig, (ax1, ax2) = plt.subplots(1, 2)
 fig.suptitle("sk-learn K-Means Python clustering")
@@ -46,7 +47,15 @@ start_kmeans = time.time()
 kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(raw_dataset)
 end_kmeans = time.time()
 end = time.time()
-print(f"code took {round(end - start, 5)} sec from start to finish while kmeans alone took {round(end_kmeans - start_kmeans, 5)} sec")
+
+wall_time = round(end - start, 5)
+kmeans_time = round(end_kmeans - start_kmeans, 5)
+print(f"code took {wall_time} sec from start to finish while kmeans alone took {kmeans_time} sec")
+# LOG RUN TIMINGS
+# timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,wall time,kmeans time
+with open("../output/runs.txt", "a+") as stats:
+    stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{wall_time},{kmeans_time}\n")
+
 ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], c=kmeans.labels_)
 ax2.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=90, marker="*", c="red")
 plt.show()
