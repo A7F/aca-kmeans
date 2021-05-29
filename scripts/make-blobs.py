@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # Generate sample blob data with obvious clusters.
 # Warning: do not override pre existing files!!! All the data generated is perfect for testing.
-n_samples = 10000
+n_samples = 50000
 centers = 2
 filepath = f"../input/{n_samples}-{centers}-blob.txt"
 
