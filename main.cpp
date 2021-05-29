@@ -15,6 +15,7 @@ const int num_points = 500;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
+
 /**
 * specify here which dataset you want to use. Datasets available:
 * "points" = random points
