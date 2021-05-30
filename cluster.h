@@ -66,12 +66,14 @@ public:
             dimension = 1;
         }
         new_x = this->new_pivot.get_x()/this->dimension;
+        new_x = std::ceil(new_x * pow(10,13)) / pow(10,13);
         new_y = this->new_pivot.get_y()/this->dimension;
+        new_y = std::ceil(new_y * pow(10,13)) / pow(10,13);
 
         if(this->pivot.get_x() == new_x && this->pivot.get_y() == new_y){
             return true;
         }
-        printf("old pivot: (%10f, %10f)\t\tnew pivot: (%10f, %10f)\n", pivot.get_x(), pivot.get_y(), new_x, new_y);
+        printf("old pivot: (%.15f, %.15f)\t\tnew pivot: (%.15f, %.15f)\n", pivot.get_x(), pivot.get_y(), new_x, new_y);
 
         this->pivot.set_x(new_x);
         this->pivot.set_y(new_y);

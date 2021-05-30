@@ -4,6 +4,7 @@
 #include <string>
 #include <ctime>
 #include <cmath>
+#include <iomanip>
 #include "omp.h"
 #include "point.h"
 #include "cluster.h"
@@ -13,7 +14,7 @@ using namespace std;
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 2;
 const int num_points = 50000;
-const int max_iters = 500;
+const int max_iters = 20;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -40,6 +41,7 @@ Cluster clusters[num_clusters];
 
 int main(){
     srand(time(NULL));
+    cout << setprecision(8);
     // load the dataset. Use flag true if you want to test with iris dataset
     double time_point1 = omp_get_wtime();
     int tot_points = load_dataset(dataset);
@@ -133,7 +135,7 @@ int naive_kmeans(){
     int updates = 0;
     // printf("threads set before: %d\n", omp_get_num_threads());
 
-#pragma omp parallel private(min_distance, min_cluster_index) firstprivate(updates) num_threads(1)
+#pragma omp parallel private(min_distance, min_cluster_index) shared(updates) num_threads(12)
     // printf("threads set after: %d\n", omp_get_num_threads());
     {
 #pragma omp for schedule(static)
