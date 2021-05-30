@@ -3,9 +3,9 @@ import random
 import matplotlib.pyplot as plt
 
 # parameters to consider when generating the file
-tot_points = 10000
-min_val = -500
-max_val = 500
+tot_points = 300000
+min_val = -10000
+max_val = 10000
 filepath = f"../input/{tot_points}points.txt"
 
 points = []
@@ -33,5 +33,5 @@ else:
                     fin.write(f"{x} {y}\n")
                     break
 
-plt.scatter(*zip(*points))
-plt.show()
+# plt.scatter(*zip(*points))
+# plt.show()

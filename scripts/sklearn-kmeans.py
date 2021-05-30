@@ -4,8 +4,8 @@ import numpy as np
 import time
 
 
-num_points = 50000
-num_clusters = 2
+num_points = 10000
+num_clusters = 4
 
 start = time.time()
 
@@ -30,7 +30,7 @@ class Datasets:
 
 
 ds = Datasets(num_points, num_clusters)
-sel = ds.BLOBS
+sel = ds.POINTS
 raw_dataset = ds.get_data(sel["path"])
 
 fig, (ax1, ax2) = plt.subplots(1, 2)
@@ -38,7 +38,7 @@ fig.suptitle("sk-learn K-Means Python clustering")
 ax1.set_title("Initial dataset")
 ax1.set_xlabel("x coordinate")
 ax1.set_ylabel("y coordinate")
-ax1.scatter(raw_dataset[:, 0], raw_dataset[:, 1])
+ax1.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=10)
 ax2.set_title("Clustered dataset")
 ax2.set_xlabel("x coordinate")
 ax2.set_ylabel("y coordinate")
@@ -56,6 +56,6 @@ print(f"code took {wall_time} sec from start to finish while kmeans alone took {
 with open("../output/runs.txt", "a+") as stats:
     stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{1},{kmeans.n_iter_},{wall_time},{kmeans_time}\n")
 
-ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], c=kmeans.labels_)
+ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=10, c=kmeans.labels_)
 ax2.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=90, marker="*", c="red")
 plt.show()
