@@ -10,8 +10,9 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 2;
-const int num_points = 50000;
+const int num_clusters = 4;
+const int num_points = 100000;
+const int max_iters = 30;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -22,7 +23,7 @@ const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 * "iris" = iris dataset, 3 clusters known, 150 points
 * "blobs" = synthetic clusters generated from sk-learn with function make_blobs. Set cluster and points accordingly
 **/
-const string dataset = "blobs";
+const string dataset = "points";
 
 
 // defining data and functions
@@ -39,6 +40,7 @@ Cluster clusters[num_clusters];
 int main(){
     srand(time(NULL));
     // load the dataset. Use flag true if you want to test with iris dataset
+    double time_point1 = omp_get_wtime();
     int tot_points = load_dataset(dataset);
     cout << "total points loaded: " << tot_points << endl;
     int tot_clusters = init_clusters();
@@ -46,11 +48,13 @@ int main(){
     for(int i=0; i<num_clusters; i++){
         clusters[i].print();
     }
+    double time_point2 = omp_get_wtime();
+    double duration = time_point2 - time_point1;
     bool converged = false;
 
     // algorithm start. Compute distances between each point and centroids
     int iteration = 0;
-    while(!converged){
+    while(!converged && iteration < max_iters){
         iteration++;
         naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
@@ -67,6 +71,11 @@ int main(){
     for(int i=0; i<num_clusters; i++){
         clusters[i].print();
     }
+    double time_point3 = omp_get_wtime();
+    duration = time_point3 - time_point2;
+
+    printf("Number of iterations: %d, total time: %f seconds, time per iteration: %f seconds\n",
+           iteration, duration, duration/iteration);
 
     export_result();
     return 0;

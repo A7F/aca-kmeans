@@ -73,7 +73,7 @@ public:
         if(this->pivot.get_x() == new_x && this->pivot.get_y() == new_y){
             return true;
         }
-        printf("old pivot: (%.15f, %.15f)\t\tnew pivot: (%.15f, %.15f)\n", pivot.get_x(), pivot.get_y(), new_x, new_y);
+        // printf("old pivot: (%.15f, %.15f)\t\tnew pivot: (%.15f, %.15f)\n", pivot.get_x(), pivot.get_y(), new_x, new_y);
 
         this->pivot.set_x(new_x);
         this->pivot.set_y(new_y);

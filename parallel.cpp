@@ -12,9 +12,10 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 2;
-const int num_points = 50000;
-const int max_iters = 20;
+const int num_clusters = 10;
+const int num_points = 300000;
+const int max_iters = 30;
+const int threads = 4;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -25,7 +26,7 @@ const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 * "iris" = iris dataset, 3 clusters known, 150 points
 * "blobs" = synthetic clusters generated from sk-learn with function make_blobs. Set cluster and points accordingly
 **/
-const string dataset = "blobs";
+const string dataset = "points";
 
 
 // defining data and functions
@@ -41,7 +42,6 @@ Cluster clusters[num_clusters];
 
 int main(){
     srand(time(NULL));
-    cout << setprecision(8);
     // load the dataset. Use flag true if you want to test with iris dataset
     double time_point1 = omp_get_wtime();
     int tot_points = load_dataset(dataset);
@@ -135,7 +135,7 @@ int naive_kmeans(){
     int updates = 0;
     // printf("threads set before: %d\n", omp_get_num_threads());
 
-#pragma omp parallel private(min_distance, min_cluster_index) shared(updates) num_threads(12)
+#pragma omp parallel private(min_distance, min_cluster_index) shared(updates) num_threads(threads)
     // printf("threads set after: %d\n", omp_get_num_threads());
     {
 #pragma omp for schedule(static)
@@ -147,6 +147,7 @@ int naive_kmeans(){
                 if(tmp_distance<min_distance){
                     min_distance = tmp_distance;
                     min_cluster_index = j;
+#pragma omp atomic
                     updates++;
                 }
             }
