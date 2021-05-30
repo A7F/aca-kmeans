@@ -2,6 +2,7 @@
 #define CLUSTER_H
 
 #include "point.h"
+#include "omp.h"
 
 class Cluster{
 public:
@@ -42,14 +43,13 @@ public:
     }
 
     // set total number of points belonging to the cluster. This method should reset the variable at each iteration
-    void set_dimension(int dimension){
-        this->dimension=dimension;
+    void set_dimension(int cluster_dimension){
+        this->dimension=cluster_dimension;
     }
 
     void add_point(Point point){
         this->new_pivot.set_x(new_pivot.get_x() + point.get_x());
         this->new_pivot.set_y(new_pivot.get_y() + point.get_y());
-        // this->new_pivot.set_cluster(point.get_cluster());
         dimension++;
     }
 
@@ -63,16 +63,15 @@ public:
     bool update_centroid(){
         double new_x, new_y;
         if(dimension == 0){
-            new_x = this->new_pivot.get_x()/1;
-            new_y = this->new_pivot.get_y()/1;
-        } else {
-            new_x = this->new_pivot.get_x()/this->dimension;
-            new_y = this->new_pivot.get_y()/this->dimension;
+            dimension = 1;
         }
+        new_x = this->new_pivot.get_x()/this->dimension;
+        new_y = this->new_pivot.get_y()/this->dimension;
 
         if(this->pivot.get_x() == new_x && this->pivot.get_y() == new_y){
             return true;
         }
+        printf("old pivot: (%10f, %10f)\t\tnew pivot: (%10f, %10f)\n", pivot.get_x(), pivot.get_y(), new_x, new_y);
 
         this->pivot.set_x(new_x);
         this->pivot.set_y(new_y);

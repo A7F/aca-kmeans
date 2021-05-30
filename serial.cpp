@@ -115,9 +115,12 @@ int init_clusters(){
 
 //compute the distance between all the points and centroids
 void naive_kmeans(){
+    double min_distance;
+    int min_cluster_index;
+
     for(int i=0; i<num_points; i++){
-        double min_distance = distance(points[i], clusters[0]);
-        int min_cluster_index = 0;
+        min_distance = distance(points[i], clusters[0]);
+        min_cluster_index = 0;
         for(int j=0; j<num_clusters; j++){
             double tmp_distance = distance(points[i], clusters[j]);
             // printf("distance with cluster %i pivot (%f, %f): %f\n", j, clusters[j].get_pivot().get_x(), clusters[j].get_pivot().get_y(), tmp_distance);

@@ -41,3 +41,5 @@ follows a small section of useful links and resources to keep in hand, you know.
 [another super useful explanation of the algorithm, but this time is in english](https://www.analyticsvidhya.com/blog/2019/08/comprehensive-guide-k-means-clustering/)
 
 [k-means implementation + report with openmp and c++](https://github.com/SestoAle/Parallel-K-Means)
+
+[kmeans in openmp vs cuda](https://github.com/JiaweiZhuang/CS205_final_project)

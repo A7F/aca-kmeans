@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 
-num_points = 10000
+num_points = 50000
 num_clusters = 2
 
 start = time.time()
@@ -52,9 +52,9 @@ wall_time = round(end - start, 5)
 kmeans_time = round(end_kmeans - start_kmeans, 5)
 print(f"code took {wall_time} sec from start to finish while kmeans alone took {kmeans_time} sec")
 # LOG RUN TIMINGS
-# timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,wall time,kmeans time
+# timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,threads,no. of iterations,wall time,kmeans time
 with open("../output/runs.txt", "a+") as stats:
-    stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{wall_time},{kmeans_time}\n")
+    stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{1},{kmeans.n_iter_},{wall_time},{kmeans_time}\n")
 
 ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], c=kmeans.labels_)
 ax2.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=90, marker="*", c="red")
