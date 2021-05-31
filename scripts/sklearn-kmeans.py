@@ -44,6 +44,7 @@ ax2.set_xlabel("x coordinate")
 ax2.set_ylabel("y coordinate")
 
 start_kmeans = time.time()
+# kmeans in sklearn uses all threads by default with openmp (cython). Set env variable OMP_NUM_THREADS!!!
 kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(raw_dataset)
 end_kmeans = time.time()
 end = time.time()
@@ -53,7 +54,7 @@ kmeans_time = round(end_kmeans - start_kmeans, 5)
 print(f"code took {wall_time} sec from start to finish while kmeans alone took {kmeans_time} sec")
 # LOG RUN TIMINGS
 # timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,threads,no. of iterations,wall time,kmeans time
-with open("../output/runs.txt", "a+") as stats:
+with open("../output/runs.csv", "a+") as stats:
     stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{1},{kmeans.n_iter_},{wall_time},{kmeans_time}\n")
 
 ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=10, c=kmeans.labels_)

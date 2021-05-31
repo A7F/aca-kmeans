@@ -4,6 +4,7 @@
 #include <string>
 #include <ctime>
 #include <cmath>
+#include <chrono>
 #include <iomanip>
 #include "omp.h"
 #include "point.h"
@@ -14,8 +15,8 @@ using namespace std;
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 10;
 const int num_points = 300000;
-const int max_iters = 30;
-const int threads = 4;
+const int max_iters = 50;
+const int threads = 12;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -35,7 +36,7 @@ int init_clusters();
 double distance(Point point, Cluster cluster);
 int random(int min, int max);
 int naive_kmeans();
-void export_result();
+void export_result(int iterations, double serial_time, double convergence_time);
 Point points[num_points];
 Cluster clusters[num_clusters];
 
@@ -77,12 +78,13 @@ int main(){
         clusters[i].print();
     }
     double time_point3 = omp_get_wtime();
+    double serial_time = duration;
     duration = time_point3 - time_point2;
 
     printf("Number of iterations: %d, total time: %f seconds, time per iteration: %f seconds\n",
            iteration, duration, duration/iteration);
 
-    export_result();
+    export_result(iteration, serial_time, duration);
     return 0;
 }
 
@@ -170,13 +172,13 @@ int random(int min, int max){
 }
 
 // export algorithm result to a file to process it using python (plotting, mostly)
-void export_result(){
+void export_result(int iterations, double serial_time, double convergence_time){
     stringstream ss;
     ss << base_dir << "output\\" << "res.txt";
     string filepath = ss.str();
     ofstream outfile(filepath);
     if(!outfile){
-        cout << "file can't be opened" << endl;
+        cout << "file res can't be opened" << endl;
     }
     outfile << num_clusters << endl;
     for(int i=0; i<num_clusters; i++){
@@ -186,4 +188,14 @@ void export_result(){
         outfile << points[i].get_x() << " " << points[i].get_y() << " " << points[i].get_cluster() << endl;
     }
     outfile.close();
+
+    ofstream statfile;
+    string dir = base_dir + "output\\runs.csv";
+    statfile.open(dir, ios_base::app);
+    if(!statfile){
+        cout << "file runs can't be opened" << endl;
+    }
+    const auto p1 = std::chrono::system_clock::now();
+    long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
+    statfile <<timestamp<<","<<"p,c,"<<dataset<<","<<num_points<<","<<num_clusters<<","<<threads<<","<<iterations<<","<<serial_time<<","<<convergence_time<<endl;
 }

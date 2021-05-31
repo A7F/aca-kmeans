@@ -22,10 +22,10 @@ It is accessed with permission "append" and it never gets erased, but it is poss
 by renominating the current one to something different than `res.txt`. 
 ```
 1622320725,s,p,blobs,50000,2,1,12,0.34308,0.10472
-1622320744,s,p,blobs,30000,2,6,123,0.28324,0.0748
-1622320751,s,p,blobs,30000,2,2,3,0.27526,0.07679
+1622320744,p,c,blobs,30000,2,6,123,0.28324,0.0748
+1622320751,p,c,blobs,30000,2,2,3,0.27526,0.07679
 ...
 ```
 This is a CSV file, basically. On each line:
-`linux epoch timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,no. of iterations,wall time,kmeans time`
+`linux epoch timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,threads,no. of iterations,wall time,kmeans time`
 where execution can assume values s (serial) or p (parallel); language can be either p (python) or c (C++).
