@@ -13,7 +13,7 @@ using namespace std;
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 10;
 const int num_points = 300000;
-const int max_iters = 50;
+const int max_iters = 100;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -57,12 +57,16 @@ int main(){
     int iteration = 0;
     while(!converged && iteration < max_iters){
         iteration++;
+        // double stop1 = omp_get_wtime();
         naive_kmeans();
+        // double stop2 = omp_get_wtime();
         // reset dimension for all the clusters before starting a new iteration
         for(int i=0; i<num_clusters; i++){
             converged = clusters[i].update_centroid();
             clusters[i].empty_pivot();
         }
+        // double stop3 = omp_get_wtime();
+        // printf("kmeans took %f s\tupdate centroids took %f s\n", stop2-stop1, stop3-stop2);
         printf(">>> Iteration %d done <<<\n", iteration);
     }
 

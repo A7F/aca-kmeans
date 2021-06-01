@@ -29,3 +29,11 @@ by renominating the current one to something different than `res.txt`.
 This is a CSV file, basically. On each line:
 `linux epoch timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,threads,no. of iterations,wall time,kmeans time`
 where execution can assume values s (serial) or p (parallel); language can be either p (python) or c (C++).
+
+### description of experiments
+runs-exp1: hard capped max iterations number so that all the types of codes (serial and parallel from 1 to 12 threads) 
+do the same number of iterations. This experiment is interesting because Rasha tried to run it on his processor as well. Fixed 
+number of points and clusters. Use the python script `exp1-stats.py`
+
+runs-exp2: no hard cap on iteration number, the algorithm is just free to converge in how many iterations are needed.
+Fixed number of points and clusters, same as runs-exp1. Use the file `exp2-stats.py`. 
