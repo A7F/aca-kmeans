@@ -12,8 +12,8 @@ using namespace std;
 
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 10;
-const int num_points = 300000;
-const int max_iters = 100;
+const int num_points = 150000;
+const int max_iters = 14;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -57,16 +57,12 @@ int main(){
     int iteration = 0;
     while(!converged && iteration < max_iters){
         iteration++;
-        // double stop1 = omp_get_wtime();
         naive_kmeans();
-        // double stop2 = omp_get_wtime();
         // reset dimension for all the clusters before starting a new iteration
         for(int i=0; i<num_clusters; i++){
             converged = clusters[i].update_centroid();
             clusters[i].empty_pivot();
         }
-        // double stop3 = omp_get_wtime();
-        // printf("kmeans took %f s\tupdate centroids took %f s\n", stop2-stop1, stop3-stop2);
         printf(">>> Iteration %d done <<<\n", iteration);
     }
 
@@ -138,7 +134,6 @@ void naive_kmeans(){
         min_cluster_index = 0;
         for(int j=0; j<num_clusters; j++){
             double tmp_distance = distance(points[i], clusters[j]);
-            // printf("distance with cluster %i pivot (%f, %f): %f\n", j, clusters[j].get_pivot().get_x(), clusters[j].get_pivot().get_y(), tmp_distance);
             if(tmp_distance<min_distance){
                 min_distance = tmp_distance;
                 min_cluster_index = j;
@@ -183,8 +178,8 @@ void export_result(int iterations, double serial_time, double convergence_time){
     if(!statfile){
         cout << "file runs can't be opened" << endl;
     }
-    const auto p1 = std::chrono::system_clock::now();
-    long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
+    const auto p1 = chrono::system_clock::now();
+    long timestamp = chrono::duration_cast<chrono::seconds>(p1.time_since_epoch()).count();
     int threads = 1;
     statfile <<timestamp<<","<<"s,c,"<<dataset<<","<<num_points<<","<<num_clusters<<","<<threads<<","<<iterations<<","<<serial_time<<","<<convergence_time<<endl;
 }

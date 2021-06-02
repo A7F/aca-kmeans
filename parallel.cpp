@@ -5,7 +5,6 @@
 #include <ctime>
 #include <cmath>
 #include <chrono>
-#include <iomanip>
 #include "omp.h"
 #include "point.h"
 #include "cluster.h"
@@ -16,7 +15,7 @@ using namespace std;
 const int num_clusters = 10;
 const int num_points = 300000;
 const int max_iters = 150;
-const int threads = 12;
+const int threads = 4;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -35,7 +34,7 @@ int load_dataset(string dataset);
 int init_clusters();
 double distance(Point point, Cluster cluster);
 int random(int min, int max);
-int naive_kmeans();
+void naive_kmeans();
 void export_result(int iterations, double serial_time, double convergence_time);
 Point points[num_points];
 Cluster clusters[num_clusters];
@@ -56,28 +55,28 @@ int main(){
     double time_point2 = omp_get_wtime();
     double duration = time_point2 - time_point1;
     bool converged = false;
-    int updates=0;
 
     // algorithm start. Compute distances between each point and centroids
     int iteration = 0;
-    while((!converged || updates == 0) && iteration < max_iters){
+    while((!converged) && iteration < max_iters){
         iteration++;
-        updates = naive_kmeans();
+        naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
         for(int i=0; i<num_clusters; i++){
             converged = clusters[i].update_centroid();
             clusters[i].empty_pivot();
         }
-        printf(">>> Iteration %d done, updates %d <<<\n", iteration, updates);
+        printf(">>> Iteration %d done <<<\n", iteration);
     }
 
+    double time_point3 = omp_get_wtime();
     cout << endl << "======= results after convergence (" << iteration << " iters) =======" << endl;
 
     // print the clusters once the algorithm has converged
     for(int i=0; i<num_clusters; i++){
         clusters[i].print();
     }
-    double time_point3 = omp_get_wtime();
+
     double serial_time = duration;
     duration = time_point3 - time_point2;
 
@@ -121,7 +120,6 @@ int init_clusters(){
     int index=0;
     for(index; index<num_clusters; index++){
         int random_point_index = random(0, num_points);
-        //int random_point_index = index;
         double x = points[random_point_index].get_x();
         double y = points[random_point_index].get_y();
         Cluster cluster = Cluster(Point((double) x, (double) y, index));
@@ -131,16 +129,13 @@ int init_clusters(){
 }
 
 //compute the distance between all the points and centroids
-int naive_kmeans(){
+void naive_kmeans(){
     double min_distance;
     int min_cluster_index;
-    int updates = 0;
-    // printf("threads set before: %d\n", omp_get_num_threads());
 
-#pragma omp parallel private(min_distance, min_cluster_index) shared(updates) num_threads(threads)
-    // printf("threads set after: %d\n", omp_get_num_threads());
+#pragma omp parallel private(min_distance, min_cluster_index) num_threads(threads)
     {
-#pragma omp for schedule(static)
+#pragma omp for schedule(static) reduction(+:total_critical_time)
         for(int i=0; i<num_points; i++){
             min_distance = distance(points[i], clusters[0]);
             min_cluster_index = 0;
@@ -149,16 +144,15 @@ int naive_kmeans(){
                 if(tmp_distance<min_distance){
                     min_distance = tmp_distance;
                     min_cluster_index = j;
-#pragma omp atomic
-                    updates++;
                 }
             }
             points[i].set_cluster(min_cluster_index);
 #pragma omp critical
-            clusters[min_cluster_index].add_point(points[i]);
+            {
+                clusters[min_cluster_index].add_point(points[i]);
+            }
         }
     }
-    return updates;
 }
 
 // compute the distance between two 2D points (pythagorean theorem)
