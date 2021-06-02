@@ -4,8 +4,8 @@ import numpy as np
 import time
 
 
-num_points = 10000
-num_clusters = 4
+num_points = 150000
+num_clusters = 10
 
 start = time.time()
 
@@ -49,14 +49,16 @@ kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(raw_dataset)
 end_kmeans = time.time()
 end = time.time()
 
-wall_time = round(end - start, 5)
+serial_time = round(start_kmeans - start, 5)
 kmeans_time = round(end_kmeans - start_kmeans, 5)
-print(f"code took {wall_time} sec from start to finish while kmeans alone took {kmeans_time} sec")
+print(f"code took {serial_time + kmeans_time} sec from start to finish while kmeans alone took {kmeans_time} sec")
+
 # LOG RUN TIMINGS
 # timestamp,execution (s/p),language (p/c),dataset type,no. of points,no. of clusters,threads,no. of iterations,wall time,kmeans time
 with open("../output/runs.csv", "a+") as stats:
-    stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{1},{kmeans.n_iter_},{wall_time},{kmeans_time}\n")
+    stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{1},{kmeans.n_iter_},{serial_time},{kmeans_time}\n")
 
 ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=10, c=kmeans.labels_)
 ax2.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=90, marker="*", c="red")
+plt.tight_layout()
 plt.show()
