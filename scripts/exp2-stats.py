@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.interpolate as interpolate
 
-# IMPORTANT: this file plots the results for the experiment 1 which is the one with hard-capped number of iterations.
-# So if you want to do such experiment, make sure your csv file is named "runs-exp1.csv".
+# IMPORTANT: this file plots the results for the experiment 2 which is the one without hard-capped number of iterations.
+# So if you want to do such experiment, make sure your csv file is named "runs-exp2.csv".
 
 dataset = "points"
 num_points = 300000
