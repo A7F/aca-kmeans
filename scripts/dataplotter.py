@@ -26,9 +26,11 @@ for line in lines[1:]:
 
 categories = np.array(label)
 
-plt.title(f"K-means output result for {len(label)-num_clusters} points, {num_clusters} clusters")
+# plt.title(f"K-means output result for {len(label)-num_clusters} points, {num_clusters} clusters")
+plt.title(f"C++ custom serial clustering")
 plt.xlabel("x coordinate")
 plt.ylabel("y coordinate")
-plt.scatter(x_coord, y_coord, s=10, c=label)
+plt.scatter(x_coord, y_coord, s=20, c=label)
 plt.scatter(*zip(*pivots), s=90, marker="*", c="red")
+plt.savefig("../plots/res.svg", format="svg")
 plt.show()
