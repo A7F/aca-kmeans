@@ -4,8 +4,8 @@ import numpy as np
 import time
 
 
-num_points = 150000
-num_clusters = 10
+num_points = 150
+num_clusters = 3
 
 start = time.time()
 
@@ -30,18 +30,13 @@ class Datasets:
 
 
 ds = Datasets(num_points, num_clusters)
-sel = ds.POINTS
+sel = ds.IRIS
 raw_dataset = ds.get_data(sel["path"])
 
-fig, (ax1, ax2) = plt.subplots(1, 2)
-fig.suptitle("sk-learn K-Means Python clustering")
-ax1.set_title("Initial dataset")
-ax1.set_xlabel("x coordinate")
-ax1.set_ylabel("y coordinate")
-ax1.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=10)
-ax2.set_title("Clustered dataset")
-ax2.set_xlabel("x coordinate")
-ax2.set_ylabel("y coordinate")
+
+plt.title("Python sklearn clustering")
+plt.xlabel("x coordinate")
+plt.ylabel("y coordinate")
 
 start_kmeans = time.time()
 # kmeans in sklearn uses all threads by default with openmp (cython). Set env variable OMP_NUM_THREADS!!!
@@ -58,7 +53,8 @@ print(f"code took {serial_time + kmeans_time} sec from start to finish while kme
 with open("../output/runs.csv", "a+") as stats:
     stats.write(f"{int(time.time())},{'s'},{'p'},{sel['name']},{num_points},{num_clusters},{1},{kmeans.n_iter_},{serial_time},{kmeans_time}\n")
 
-ax2.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=10, c=kmeans.labels_)
-ax2.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=90, marker="*", c="red")
+plt.scatter(raw_dataset[:, 0], raw_dataset[:, 1], s=20, c=kmeans.labels_)
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=90, marker="*", c="red")
 plt.tight_layout()
+plt.savefig("../plots/iris-sklearn.svg", format="svg")
 plt.show()
