@@ -12,8 +12,8 @@ using namespace std;
 
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 10;
-const int num_points = 150000;
-const int max_iters = 14;
+const int num_points = 100000;
+const int max_iters = 60;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -59,10 +59,12 @@ int main(){
         iteration++;
         naive_kmeans();
         // reset dimension for all the clusters before starting a new iteration
+        double t1 = omp_get_wtime();
         for(int i=0; i<num_clusters; i++){
             converged = clusters[i].update_centroid();
             clusters[i].empty_pivot();
         }
+        printf("update cluster time: %f\n", omp_get_wtime()-t1);
         printf(">>> Iteration %d done <<<\n", iteration);
     }
 
@@ -128,12 +130,16 @@ int init_clusters(){
 void naive_kmeans(){
     double min_distance;
     int min_cluster_index;
+    double tot_dst_time = 0;
 
     for(int i=0; i<num_points; i++){
         min_distance = distance(points[i], clusters[0]);
         min_cluster_index = 0;
         for(int j=0; j<num_clusters; j++){
+            double t1 = omp_get_wtime();
             double tmp_distance = distance(points[i], clusters[j]);
+            t1 = omp_get_wtime() - t1;
+            tot_dst_time += t1;
             if(tmp_distance<min_distance){
                 min_distance = tmp_distance;
                 min_cluster_index = j;
@@ -142,6 +148,7 @@ void naive_kmeans(){
         points[i].set_cluster(min_cluster_index);
         clusters[min_cluster_index].add_point(points[i]);
     }
+    printf("total time to compute distances: %f s\n", tot_dst_time);
 }
 
 // compute the distance between two 2D points (pythagorean theorem)
