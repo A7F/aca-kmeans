@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 # these following directives disable dynamic threads and force use of defined following number of threads
 # corresponds to omp_set_dynamic(0) from code
 set(ENV{OMP_DYNAMIC} 0)
-# corresponds to omp_set_num_threads(4) from code
-set(ENV{OMP_NUM_THREADS} 4)
 
 find_package(OpenMP REQUIRED)
 

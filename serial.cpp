@@ -90,18 +90,19 @@ int main(){
 int load_dataset(string dataset){
     stringstream ss;
     if(dataset=="iris"){
-        ss << base_dir << "input\\iris.txt";
+        ss << base_dir << "input/iris.txt";
     }
     if(dataset=="points"){
-        ss << base_dir << "input\\" << num_points << "points.txt";
+        ss << base_dir << "input/" << num_points << "points.txt";
     }
     if(dataset=="blobs"){
-        ss << base_dir << "input\\" << num_points << "-" << num_clusters << "-blob.txt";
+        ss << base_dir << "input/" << num_points << "-" << num_clusters << "-blob.txt";
     }
     string filepath = ss.str();
     ifstream infile(filepath);
     if(!infile){
         cerr << "Could not open file. Maybe the number of points set is wrong?" << std::endl;
+        exit(0);
     }
     double x, y;
     int i=0;
@@ -164,7 +165,7 @@ int random(int min, int max){
 // export algorithm result to a file to process it using python (plotting, mostly)
 void export_result(int iterations, double serial_time, double convergence_time){
     stringstream ss;
-    ss << base_dir << "output\\" << "res.txt";
+    ss << base_dir << "output/" << "res.txt";
     string filepath = ss.str();
     ofstream outfile(filepath);
     if(!outfile){
@@ -180,7 +181,7 @@ void export_result(int iterations, double serial_time, double convergence_time){
     outfile.close();
 
     ofstream statfile;
-    string dir = base_dir + "output\\runs.csv";
+    string dir = base_dir + "output/runs.csv";
     statfile.open(dir, ios_base::app);
     if(!statfile){
         cout << "file runs can't be opened" << endl;
