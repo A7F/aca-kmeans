@@ -37,3 +37,8 @@ number of points and clusters. Use the python script `exp1-stats.py`
 
 runs-exp2: no hard cap on iteration number, the algorithm is just free to converge in how many iterations are needed.
 Fixed number of points and clusters, same as runs-exp1. Use the file `exp2-stats.py`. 
+
+runs-exp3: a comparison with serial Python and serial C++ varying the number of points but with fixed number of clusters.
+
+runs-exp4: rasha running serial code c++ and with fixed number of points but varying the clusters. We notice an increase 
+in the average kmeans time to complete a single iteration, as expected.

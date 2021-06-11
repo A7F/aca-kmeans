@@ -13,7 +13,7 @@ using namespace std;
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 10;
 const int num_points = 100000;
-const int max_iters = 60;
+const int max_iters = 150;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
