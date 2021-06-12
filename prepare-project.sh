@@ -5,3 +5,4 @@ mkdir our_builds
 cd our_builds
 cmake ../../aca-kmeans
 cmake --build .
+mv aca_kmeans ../
