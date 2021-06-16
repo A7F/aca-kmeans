@@ -13,6 +13,24 @@ art implementation!).
 Because the algorithm is intrinsically non-deterministic, we decided to start the algorithm with pre-defined datasets to 
 decrease variance between experiments. Please check the folder input for more infos about the datasets we used.
 
+### Run the code on Google Cloud Platform
+We included an easy script (that is, `prepare-project.sh`) that helps configuring the environment on your virtual machine. 
+All you need to do is to install git with
+
+`sudo apt-get install git`
+
+and then clone this repo:
+
+`git clone https://github.com/A7F/aca-kmeans.git`
+
+move to the newly created folder with `cd aca-kmeans` and assign run permissions to the script `prepare-project.sh` with
+
+`sudo chmod 777 ./prepare-project.sh`
+
+Please remember to set the correct working directory inside the script you want to run first! For example, if you want to run 
+the serial script, paste your path inside the variable `base_dir`. After that, the bash script we provided automatically 
+builds the project and prepares the runnable file in the same directory, so all you need to do is to call `./aca_kmeans`.
+
 ## Some useful resources...
 follows a small section of useful links and resources to keep in hand, you know... <i>just in case</i>...
 
