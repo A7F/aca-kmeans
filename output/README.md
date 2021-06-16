@@ -35,8 +35,7 @@ where execution can assume values s (serial) or p (parallel); language can be ei
 
 ### description of experiments
 runs-exp1: hard capped max iterations number so that all the types of codes (serial and parallel from 1 to 12 threads) 
-do the same number of iterations. This experiment is interesting because Rasha tried to run it on his processor as well. Fixed 
-number of points and clusters. Use the python script `exp1-stats.py`
+do the same number of iterations. Fixed number of points and clusters. Use the python script `exp1-stats.py`
 
 runs-exp2: no hard cap on iteration number, the algorithm is just free to converge in how many iterations are needed.
 Fixed number of points and clusters, same as runs-exp1. Use the file `exp2-stats.py`. 
@@ -44,7 +43,7 @@ Fixed number of points and clusters, same as runs-exp1. Use the file `exp2-stats
 runs-exp3: a comparison with serial Python and serial C++ varying the number of points but with fixed number of clusters.
 Iterations are capped in cpp code according to those needed in Python to make a fair comparison
 
-runs-exp4: rasha and Luca running serial code c++ and with fixed number of points but varying the clusters. We notice an increase 
+runs-exp4: running serial code c++ and with fixed number of points but varying the clusters. We notice an increase 
 in the average kmeans time to complete a single iteration, as expected.
 
 runs-exp5: serial cpp code, we fix the number of clusters and we vary the number of points. Goal is to see if there are any 
