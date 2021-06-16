@@ -39,6 +39,15 @@ runs-exp2: no hard cap on iteration number, the algorithm is just free to conver
 Fixed number of points and clusters, same as runs-exp1. Use the file `exp2-stats.py`. 
 
 runs-exp3: a comparison with serial Python and serial C++ varying the number of points but with fixed number of clusters.
+Iterations are capped in cpp code according to those needed in Python to make a fair comparison
 
-runs-exp4: rasha running serial code c++ and with fixed number of points but varying the clusters. We notice an increase 
+runs-exp4: rasha and Luca running serial code c++ and with fixed number of points but varying the clusters. We notice an increase 
 in the average kmeans time to complete a single iteration, as expected.
+
+runs-exp5: serial cpp code, we fix the number of clusters and we vary the number of points. Goal is to see if there are any 
+differences with exp4.
+
+runs-exp6: performance comparison between the increase in amount of cores and the amount of data points, to check how well 
+the overall parallel implementation scales compared to the serial one.
+
+gcp-parallel: measures on gcp varying the number of core count and data points as input, but fixed number of clusters to 10.

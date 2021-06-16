@@ -13,9 +13,9 @@ using namespace std;
 
 // define how many clusters of points we want and the total number of points
 const int num_clusters = 10;
-const int num_points = 300000;
-const int max_iters = 150;
-const int threads = 4;
+const int num_points = 150000;
+const int max_iters = 25;
+const int threads = 12;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -104,6 +104,7 @@ int load_dataset(string dataset){
     ifstream infile(filepath);
     if(!infile){
         cerr << "Could not open file. Maybe the number of points set is wrong?" << std::endl;
+        exit(0);
     }
     double x, y;
     int i=0;
@@ -135,7 +136,7 @@ void naive_kmeans(){
 
 #pragma omp parallel private(min_distance, min_cluster_index) num_threads(threads)
     {
-#pragma omp for schedule(static) reduction(+:total_critical_time)
+#pragma omp for schedule(static)
         for(int i=0; i<num_points; i++){
             min_distance = distance(points[i], clusters[0]);
             min_cluster_index = 0;

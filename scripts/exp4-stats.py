@@ -41,8 +41,11 @@ for cluster in num_clusters:
 
 plt.title("Serial iteration time, 100000 points")
 plt.xlabel("clusters")
-plt.ylabel("avg. iteration time")
+plt.ylabel("avg. iteration time in seconds")
 plt.plot(x, y, label="i7 10710U")
+
+
+
 plt.legend()
 
 plt.tight_layout()

@@ -16,7 +16,7 @@ data = pd.read_csv("../output/runs-exp3.csv", header=None, names=names)
 
 
 fig, ax = plt.subplots(1, 2)
-fig.suptitle(f"C++ vs Python serial run stats with {num_clusters} clusters")
+fig.suptitle(f"C++ vs Python serial code, {num_clusters} clusters, capped iterations to python")
 
 dfs = [data[(data["lang"] == "c")], data[(data["lang"] == "p")]]
 
