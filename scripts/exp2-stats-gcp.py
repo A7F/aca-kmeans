@@ -13,7 +13,7 @@ threads = list(range(1, 24))
 tot_threads = 24
 
 names = ["timestamp", "type", "lang", "dataset", "points", "clusters", "threads", "iterations", "serial time", "kmeans time"]
-data = pd.read_csv("../output/gcp-parallel-t.csv", header=None, names=names)
+data = pd.read_csv("../output/gcp-parallel.csv", header=None, names=names)
 
 plot = []
 kmeans_weights = []

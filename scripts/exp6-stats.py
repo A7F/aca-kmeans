@@ -19,7 +19,6 @@ kmeans_weights = []
 speedups = []
 
 fig, ax = plt.subplots(1, 1)
-# fig.suptitle(f"C++ run stats for {num_points} points and {num_clusters} clusters")
 
 for n_procs in tot_threads:
     plot = []

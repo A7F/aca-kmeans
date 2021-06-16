@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# IMPORTANT: this file plots the results for the experiment 6 which is the one with different threads and points but on GCP.
+# IMPORTANT: this file plots the results for the experiment 6 which is the same as exp6 but on GCP.
 # So if you want to do such experiment, make sure your csv file is named "gcp-parallel.csv".
 
 dataset = "points"
@@ -19,7 +19,6 @@ kmeans_weights = []
 speedups = []
 
 fig, ax = plt.subplots(1, 1)
-# fig.suptitle(f"C++ run stats for {num_points} points and {num_clusters} clusters")
 
 for n_procs in tot_threads:
     plot = []
