@@ -1,7 +1,7 @@
 <h1 align="center">K-Means clustering</h1>
 <h5 align="center">Luca Todaro and Rasha Zieni, University of Pavia</h5>
 this repository contains the code for our Advanced Computer Architecture project work: an implementation of serial and 
-parallel k-means clustering algorithm, written in C++.
+parallel k-means clustering algorithm, written in C++. Oh and by the way, we got A+. :D
 
 ## Project description
 we are running the kmeans algorithm both in C++ (our own serial and parallel implementation) as well as in Python using 
@@ -34,6 +34,10 @@ builds the project and prepares the runnable file in the same directory, so all 
 ## Some useful resources...
 follows a small section of useful links and resources to keep in hand, you know... <i>just in case</i>...
 
+[project presentation](./resources/project_presentation.pdf)
+[project report](./resources/project_report.pdf)
+
 ### Course links
 [aca project work page](http://www-5.unipv.it/mferretti/cdol/aca/Examination%20and%20project%20work.htm) and 
 [course index](http://www-5.unipv.it/mferretti/cdol/aca/index.htm)
+

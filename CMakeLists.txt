@@ -9,7 +9,7 @@ set(ENV{OMP_DYNAMIC} 0)
 
 find_package(OpenMP REQUIRED)
 
-add_executable(aca_kmeans serial.cpp)
+add_executable(aca_kmeans parallel.cpp)
 
 if(OpenMP_CXX_FOUND)
     target_link_libraries(aca_kmeans PUBLIC OpenMP::OpenMP_CXX)

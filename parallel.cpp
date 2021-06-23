@@ -12,10 +12,10 @@
 using namespace std;
 
 // define how many clusters of points we want and the total number of points
-const int num_clusters = 10;
-const int num_points = 150000;
-const int max_iters = 25;
-const int threads = 12;
+const int num_clusters = 4;
+const int num_points = 10000;
+const int max_iters = 250;
+const int threads = 4;
 
 // specify here your absolute path to project folder
 const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
@@ -26,7 +26,7 @@ const string base_dir = R"(C:\Users\rockt\CLionProjects\aca-kmeans\)";
 * "iris" = iris dataset, 3 clusters known, 150 points
 * "blobs" = synthetic clusters generated from sk-learn with function make_blobs. Set cluster and points accordingly
 **/
-const string dataset = "points";
+const string dataset = "blobs";
 
 
 // defining data and functions
